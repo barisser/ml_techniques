@@ -23,8 +23,9 @@ def to_one_hot(labels, num_classes=10):
 class SimpleNN(nn.Module):
     def __init__(self):
         super(SimpleNN, self).__init__()
-        self.fc1 = nn.Linear(28*28, 100)
-        self.fc2 = nn.Linear(100, 10)
+        self.fc1 = nn.Linear(28*28, 300)
+        self.fc2 = nn.Linear(300, 100)
+        self.fc3 = nn.Linear(100, 10)
         self.criterion = nn.CrossEntropyLoss()
         #self.optimizer = optim.Adam(self.parameters(), lr=0.001)
         self.optimizer = optim.SGD(self.parameters(), lr=0.01)
@@ -35,7 +36,8 @@ class SimpleNN(nn.Module):
     def forward(self, x):
         x = x.view(-1, 28*28)
         x = torch.relu(self.fc1(x))
-        x = self.fc2(x)
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
         return x
 
     def train_model(self, train_loader, num_epochs=3):
